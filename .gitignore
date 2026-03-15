@@ -5,3 +5,5 @@ checkpoints/*.pth
 .env
 .venv
 .idea
+data/.gitkeep
+checkpoints/.gitkeep

@@ -47,3 +47,44 @@ class Backbone(nn.Module):
 
     def forward(self, x):
         return self.features(x)
+
+class DetectionHead(nn.Module):
+    def __init__(self, grid_size=7, num_boxes=2, num_classes=20):
+        super().__init__()
+        self.S = grid_size
+        self.B = num_boxes
+        self.C = num_classes
+
+        self.conv = nn.Sequential(
+            ConvBlock(1024, 1024, kernel_size=3, stride=1, padding=1),
+            ConvBlock(1024, 1024, kernel_size=3, stride=2, padding=1)
+        )
+
+        self.conv = nn.Sequential(
+            ConvBlock(1024, 1024, kernel_size=3, stride=1, padding=1),
+            ConvBlock(1024, 1024, kernel_size=3, stride=1, padding=1)
+        )
+
+        self.fc = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(1024 * self.S, 4096),
+            nn.Dropout(0.5),
+            nn.LeakyReLU(0.1),
+            nn.Linear(4096, self.S * self.S * (self.B * 5  + self.C))
+        )
+    def forward(self, x):
+        x = self.conv(x)
+        x = self.fc(x)
+        # [batch_size, S, S, B*5 + C]
+        return x.view(-1, self.S, self.S, self.B * 5 + self.C)
+
+class TinyDetector(nn.Module):
+    def __init__(self, grid_size=7, num_boxes=2, num_classes=20):
+        super().__init__()
+        self.backbone = Backbone()
+        self.head = DetectionHead(grid_size, num_boxes, num_classes)
+
+    def forward(self, x):
+        features = self.backbone(x)
+        predictions = self.head(features)
+        return predictions
