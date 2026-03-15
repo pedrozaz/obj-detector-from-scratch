@@ -1,8 +1,7 @@
 data/*
-!data/.gitkeep
+!/data/.gitkeep
 checkpoints/*.pth
-!checkpoint/.gitkeep
+!/checkpoints/.gitkeep
 .env
 .venv
 .idea
-
