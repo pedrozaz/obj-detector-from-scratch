@@ -57,25 +57,20 @@ class DetectionHead(nn.Module):
 
         self.conv = nn.Sequential(
             ConvBlock(1024, 1024, kernel_size=3, stride=1, padding=1),
-            ConvBlock(1024, 1024, kernel_size=3, stride=2, padding=1)
-        )
-
-        self.conv = nn.Sequential(
             ConvBlock(1024, 1024, kernel_size=3, stride=1, padding=1),
-            ConvBlock(1024, 1024, kernel_size=3, stride=1, padding=1)
         )
 
         self.fc = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(1024 * self.S, 4096),
+            nn.Linear(1024 * self.S * self.S, 4096),
             nn.Dropout(0.5),
             nn.LeakyReLU(0.1),
-            nn.Linear(4096, self.S * self.S * (self.B * 5  + self.C))
+            nn.Linear(4096, self.S * self.S * (self.B * 5 + self.C))
         )
+
     def forward(self, x):
         x = self.conv(x)
         x = self.fc(x)
-        # [batch_size, S, S, B*5 + C]
         return x.view(-1, self.S, self.S, self.B * 5 + self.C)
 
 class TinyDetector(nn.Module):
