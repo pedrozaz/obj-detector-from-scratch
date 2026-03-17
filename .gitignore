@@ -5,3 +5,7 @@ checkpoints/*.pth
 .env
 .venv
 .idea
+data/.gitkeep
+checkpoints/.gitkeep
+*/__pycache__
+__pycache__
