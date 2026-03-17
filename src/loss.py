@@ -26,6 +26,7 @@ class YoloLoss(nn.Module):
         obj = target[..., self.C+4].unsqueeze(3)
         noobj = 1 - obj
 
+        # Coords selection
         best_box_coords = (1 - bestbox) * box1 + bestbox * box2
 
         box_predictions = best_box_coords.clone()
@@ -41,6 +42,7 @@ class YoloLoss(nn.Module):
             torch.flatten(box_targets * obj, end_dim=-2)
         )
 
+        # Objectness loss
         pred_box_conf = (1 - bestbox) * predictions[..., self.C+4:self.C+5] + bestbox * predictions[..., self.C+9:self.C+10]
 
         object_loss = self.mse(
@@ -48,6 +50,7 @@ class YoloLoss(nn.Module):
             torch.flatten(obj * iou_maxes)
         )
 
+        # No-Object loss
         no_object_loss = self.mse(
             torch.flatten(noobj * predictions[..., self.C+4:self.C+5], start_dim=1),
             torch.flatten(noobj * target[..., self.C+4:self.C+5], start_dim=1)
@@ -57,11 +60,13 @@ class YoloLoss(nn.Module):
             torch.flatten(noobj * target[..., self.C+4:self.C+5], start_dim=1)
         )
 
+        # Class loss
         class_loss = self.mse(
             torch.flatten(obj * predictions[..., :self.C], end_dim=-2),
             torch.flatten(obj * target[..., :self.C], end_dim=-2)
         )
 
+        # Total loss
         loss = (
             self.lambda_coord * box_loss
             + object_loss
