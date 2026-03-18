@@ -55,18 +55,22 @@ class VOCDataset(Dataset):
         root = tree.getroot()
         bboxes = []
 
-        for obj in root.findall('object'):
-            cls_name = obj.find('name').text
-            if cls_name in self.class_to_idx:
+        for obj in root.findall("object"):
+            name_node = obj.find("name")
+            if name_node is None or name_node.text is None:
                 continue
+
+            cls_name = name_node.text.lower().strip()
+            if cls_name not in self.class_to_idx:
+                continue
+
             class_idx = self.class_to_idx[cls_name]
 
-            bndbox = obj.find('bndbox')
-
-            xmin = float(bndbox.find('xmin').text) - 1
-            ymin = float(bndbox.find('ymin').text) - 1
-            xmax = float(bndbox.find('xmax').text) - 1
-            ymax = float(bndbox.find('ymax').text) - 1
+            bndbox = obj.find("bndbox")
+            xmin = float(bndbox.find("xmin").text) - 1
+            ymin = float(bndbox.find("ymin").text) - 1
+            xmax = float(bndbox.find("xmax").text) - 1
+            ymax = float(bndbox.find("ymax").text) - 1
 
             bboxes.append([xmin, ymin, xmax, ymax, class_idx])
 
