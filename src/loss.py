@@ -74,7 +74,15 @@ class YoloLoss(nn.Module):
             + class_loss
         )
 
-        return loss
+        # Breakdown / Logs
+        loss_breakdown = {
+            'coord': (self.lambda_coord * box_loss).item(),
+            'obj': object_loss.item(),
+            'noobj': (self.lambda_noobj * no_object_loss).item(),
+            'cls': class_loss.item()
+        }
+
+        return loss, loss_breakdown
 
 def iou(boxes1, boxes2):
     b1_x1 = boxes1[..., 0:1] - boxes1[..., 2:3] / 2
