@@ -1,3 +1,5 @@
+import os
+
 import torch
 import torch.optim as optim
 from torch.utils.data import DataLoader
@@ -64,12 +66,10 @@ def main():
     optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE, weight_decay=WEIGHT_DECAY)
     scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=EPOCHS)
     loss_fn = YoloLoss(S=7, B=2, C=20)
-
     scaler = torch.amp.GradScaler('cuda')
-
     transform = get_transforms()
 
-    dataset = VOCDataset(data_dir="data/dummy_voc", split="train", transform=transform)
+    dataset = VOCDataset(data_dir="data/data/VOCdevkit/VOC2012", split="train", transform=transform)
 
     train_loader = DataLoader(
         dataset,
@@ -79,6 +79,8 @@ def main():
         pin_memory=True,
         drop_last=False
     )
+
+    os.makedirs("checkpoints", exist_ok=True)
 
     for epoch in range(EPOCHS):
         print(f"\nEpoch {epoch + 1}/{EPOCHS}")
@@ -92,9 +94,8 @@ def main():
         print(
             f"Breakdown -> Coord: {breakdown['coord']:.4f} | Obj: {breakdown['obj']:.4f} | NoObj: {breakdown['noobj']:.4f} | Cls: {breakdown['cls']:.4f}")
 
-        if epoch == 1:
-            print("\nTeste de sanidade concluído. Interrompendo loop fictício.")
-            break
+    torch.save(model.state_dict(), "checkpoints/yolo_baseline_voc2012.pth")
+    print(f'\nTraining completed. Weights saved to "checkpoints/yolo_baseline_voc2012.pth"')
 
 
 if __name__ == "__main__":
