@@ -20,7 +20,7 @@ def non_max_suppression(predictions, iou_threshold=0.5, prob_threshold=0.4):
         chosen_box_tensor = chosen_box[2:6].unsqueeze(0)
         rest_boxes_tensor = predictions[1:, 2:6]
 
-        ious = iou(chosen_box_tensor, rest_boxes_tensor).squeeze(0)
+        ious = iou(chosen_box_tensor, rest_boxes_tensor).view(-1)
 
         same_class_mask = predictions[1:, 0] == chosen_box[0]
         iou_mask = ious > iou_threshold
