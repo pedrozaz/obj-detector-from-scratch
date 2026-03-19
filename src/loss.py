@@ -51,13 +51,22 @@ class YoloLoss(nn.Module):
         )
 
         # No-Object loss
-        no_object_loss = self.mse(
-            torch.flatten(noobj * predictions[..., self.C+4:self.C+5], start_dim=1),
-            torch.flatten(noobj * target[..., self.C+4:self.C+5], start_dim=1)
-        )
-        no_object_loss += self.mse(
-            torch.flatten(noobj * predictions[..., self.C+9:self.C+10], start_dim=1),
-            torch.flatten(noobj * target[..., self.C+4:self.C+5], start_dim=1)
+        noobj_pred_1 = predictions[..., 24:25]
+        noobj_pred_2 = predictions[..., 29:30]
+
+        target_obj = target[..., 24:25]
+        noobj_mask = 1 - target_obj
+
+        gamma = 2.0
+        focal_weight_1 = torch.abs(noobj_pred_1) ** gamma
+        focal_weight_2 = torch.abs(noobj_pred_2) ** gamma
+
+        mse_noobj_1 = self.mse(noobj_pred_1, target_obj)
+        mse_noobj_2 = self.mse(noobj_pred_2, target_obj)
+
+        no_object_loss = (
+            torch.sum(noobj_mask * focal_weight_1 * mse_noobj_1) +
+            torch.sum(noobj_mask * focal_weight_2 * mse_noobj_2)
         )
 
         # Class loss
