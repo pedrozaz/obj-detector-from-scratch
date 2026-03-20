@@ -11,7 +11,7 @@ def main():
     NUM_WORKERS = 4
 
     model = TinyDetector(grid_size=7, num_boxes=2, num_classes=20).to(DEVICE)
-    model.load_state_dict(torch.load("checkpoints/yolo_focal_loss_voc2012.pth", map_location=DEVICE, weights_only=True))
+    model.load_state_dict(torch.load("checkpoints/yolo_resnet_voc2012.pth", map_location=DEVICE, weights_only=True))
     model.eval()
 
     transform = get_transforms()

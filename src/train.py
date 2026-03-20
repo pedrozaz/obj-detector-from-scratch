@@ -94,8 +94,8 @@ def main():
         print(
             f"Breakdown -> Coord: {breakdown['coord']:.4f} | Obj: {breakdown['obj']:.4f} | NoObj: {breakdown['noobj']:.4f} | Cls: {breakdown['cls']:.4f}")
 
-    torch.save(model.state_dict(), "checkpoints/yolo_focal_loss_voc2012.pth")
-    print(f'\nTraining completed. Weights saved to "checkpoints/yolo_focal_loss_voc2012.pth"')
+    torch.save(model.state_dict(), "checkpoints/yolo_resnet_voc2012.pth")
+    print(f'\nTraining completed. Weights saved to "checkpoints/yolo_resnet_voc2012.pth"')
 
 
 if __name__ == "__main__":
