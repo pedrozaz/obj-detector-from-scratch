@@ -40,9 +40,6 @@ class TinyDetector(nn.Module):
 
         self.backbone = nn.Sequential(*(list(resnet.children())[:-2]))
 
-        for param in self.backbone.parameters():
-            param.requires_grad_(False)
-
         self.downsample = nn.Sequential(
             nn.Conv2d(512, 512, kernel_size=3, stride=2, padding=1, bias=False),
             nn.BatchNorm2d(512),

@@ -55,7 +55,7 @@ def train_fn(train_loader, model, optimizer, loss_fn, device, scaler):
 
 
 def main():
-    LEARNING_RATE = 1e-4
+    LEARNING_RATE = 1e-5
     WEIGHT_DECAY = 5e-4
     BATCH_SIZE = 16
     EPOCHS = 100
@@ -94,7 +94,7 @@ def main():
         print(
             f"Breakdown -> Coord: {breakdown['coord']:.4f} | Obj: {breakdown['obj']:.4f} | NoObj: {breakdown['noobj']:.4f} | Cls: {breakdown['cls']:.4f}")
 
-    torch.save(model.state_dict(), "checkpoints/yolo_resnet_voc2012.pth")
+    torch.save(model.state_dict(), "checkpoints/yolo_finetune_voc2012.pth")
     print(f'\nTraining completed. Weights saved to "checkpoints/yolo_resnet_voc2012.pth"')
 
 
