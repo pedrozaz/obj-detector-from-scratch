@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "albumentations>=2.0.8",
+    "matplotlib>=3.10.8",
     "tensorboard>=2.20.0",
     "torch>=2.10.0",
     "torchvision>=0.25.0",
