@@ -1,8 +1,11 @@
 data/*
-!data/.gitkeep
+!/data/.gitkeep
 checkpoints/*.pth
-!checkpoint/.gitkeep
+!/checkpoints/.gitkeep
 .env
 .venv
 .idea
-
+data/.gitkeep
+checkpoints/.gitkeep
+*/__pycache__
+__pycache__

@@ -1,11 +1,12 @@
 [project]
 name = "detector-from-scratch"
-version = "0.1.0"
-description = "Add your description here"
+version = "1.0.0"
+description = "Mathematical founded research project"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "albumentations>=2.0.8",
+    "matplotlib>=3.10.8",
     "tensorboard>=2.20.0",
     "torch>=2.10.0",
     "torchvision>=0.25.0",
