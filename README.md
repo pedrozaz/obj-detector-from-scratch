@@ -5,7 +5,7 @@ This repository serves as a scientific and practical baseline for understanding 
 a PyTorch implementation of the original YOLO algorithm built from scratch. The primary goal is to map the mathematical, structural,
 and hardware bottlenecks of legacy detection systems.
 
-The empirical findings documented here act as the theoretical groundwork for subsequent [project](https://github.com/pedrozaz/estaciona-ai] project), transitioning from this baseline to
+The empirical findings documented here act as the theoretical groundwork for subsequent [project](https://github.com/pedrozaz/estaciona-ai), transitioning from this baseline to
 the state-of-the-art YOLOv8 architecture.
 
 ## Hardware Constraints & Engineering
