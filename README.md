@@ -51,3 +51,7 @@ uv run python -m src.train
 uv run python eval.py
 ```
 
+## Mathematical Foundations
+For a deep dive into the spatial loss function (MSE), bounding box regression math, and the focal loss modulation experiment,
+please refer to [MATH.md](MATH.md).
+
