@@ -14,8 +14,8 @@ $$Loss_{coord} = \lambda_{coord} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}
  
 ### Objectness Confidence Loss
  
-Evaluates the confidence score $C$. $\mathbb{1}_{ij}^{obj}$ denotes if an object is present in cell $i$ and bounding box predictor $j$, while $\mathbb{1}_{ij}^{noobj}$ denotes the background.
- 
+Evaluates the confidence score $C$. $\mathbb{1}\_{ij}^{obj}$ denotes if an object is present in cell $i$ and bounding box predictor $j$, while $\mathbb{1}_{ij}^{noobj}$ denotes the background.
+
 $$Loss_{conf} = \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{obj}(C_i - \hat{C}_i)^2 + \lambda_{noobj} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{noobj}(C_i - \hat{C}_i)^2$$
  
 ### Classification Loss
