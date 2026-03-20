@@ -1,4 +1,19 @@
-Epoch 100/100
-100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 358/358 [00:32<00:00, 11.09it/s, loss=1.09]
-Mean Loss: 5.3802
-Breakdown -> Coord: 1.4650 | Obj: 0.3287 | NoObj: 0.1496 | Cls: 3.4370
+# Experiment Decisions Log
+
+## 1. Baseline (From-Scratch training)
+- **Goal**: Train a simplified YOLO architecture from scratch with random weights on Pascal VOC 2012.
+- **Result**: mAP@0.5 of 0.0049.
+- **Failure Reason**: Reducing the DetectionHead parameters to
+fit the 6GB VRAM constraint severely limited spatial abstraction. Combined
+with the lack of pre-training, the model overfitted to predicting background in most cells, resulting in excessive false negatives.
+
+## 2. Focal Loss
+- **Goal**: Implement Focal Loss to balance the massive background prediction.
+- **Result**: mAP@0.5 of 0.0000.
+- **Failure Reason**: The modulation factor zeroed the gradients for background predictions
+early on (which were already close zero). The network stopped penalizing the background, flooding the grid with false positives and collapsing precision.
+
+## Decision: Transfer Learning (ResNet18)
+- Since object detection datasets (like VOC) lack the volume needed to teach basic feature extraction (edges, textures)
+to networks initialized from scratch, the custom backbone is discarded.
+- A ResNet18 pre-trained on ImageNet will be adopted. The backbone will be frozen to ensure advanced feature extraction, and only the DetectionHead will be trained, enabling convergence within the hardware's physical memory limits.
