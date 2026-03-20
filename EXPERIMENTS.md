@@ -23,3 +23,11 @@ to networks initialized from scratch, the custom backbone is discarded.
 - **Result**: mAP@0.5 of 0.0356.
 - **Decision**: The mAP improved by ~7x but remains unviable. The frozen backbone prevents spatial regression
 adaptation. The next step is full Fine-Tuning: unfreezing the backbone and training the entire network with a lower learning-rate (1e-5).
+
+## 4. Full Fine-Tuning (Unfrozen ResNet18)
+- **Goal**: Unfreeze the entire ResNet18 backbone and train with a lower learning rate (1e-5) to adapt spatial
+ feature extraction for the detection task.
+- **Result**: mAP@0.5: 0.0236.
+- **Conclusion**: The mAP degraded. Fine-tuning with a micro-batch size destabilized the Batch Normalization layers,
+introducing gradient noise that corrupted the pre-trained weights. This experiment validates the necessity of modern object detection advancements
+  (like YOLOv8 decoupled, and CIoU loss) for stable convergence.
